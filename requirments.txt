@@ -1,3 +1,8 @@
 Django==4.2.3
 django-extensions
 ipython
+
+#flake
+flake8
+flake8-builtins
+flake8-print
