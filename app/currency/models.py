@@ -9,15 +9,10 @@ class Rate(models.Model):
     source = models.CharField(max_length=68)
 
 
-
-from django.db import models
-
 class ContactUs(models.Model):
-    id = models.AutoField(primary_key=True)
-
     email_from = models.EmailField()
     subject = models.CharField(max_length=100)
     message = models.TextField()
 
     def __str__(self):
-        return f"{self.id} - {self.email_from} - {self.subject}"
+        return f"{self.pk} - {self.email_from} - {self.subject}"
