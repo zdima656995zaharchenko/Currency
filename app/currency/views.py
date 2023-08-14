@@ -1,6 +1,12 @@
 from django.shortcuts import render
-from .models import ContactUs
+from .models import Rate, ContactUs
 
+def rates_view(request):
+    rates = Rate.objects.all()
+    return render(request, 'rates.html', {'rates': rates})
+
+def contact_view(request):
+    return render(request, 'contact.html')
 
 def contact_us_list(request):
     contacts = ContactUs.objects.all()

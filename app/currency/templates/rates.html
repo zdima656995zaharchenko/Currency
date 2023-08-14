@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>Валюта</th>
+            <th>Ставка</th>
+        </tr>
+        {% for rate in rates %}
+        <tr>
+            <td>{{ rate.currency }}</td>
+            <td>{{ rate.rate }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
