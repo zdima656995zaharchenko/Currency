@@ -15,3 +15,13 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Source(models.Model):
+    source_url = models.CharField(max_length=255)
+    name = models.CharField(max_length=64)
+    exchange_address = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=12)
+
+    def __str__(self):
+        return self.name

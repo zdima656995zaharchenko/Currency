@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Default Title{% endblock %}</title>
 </head>
 <body>
     <header>
@@ -15,8 +15,10 @@
     </header>
 
     <main>
-        {% block content %}
-        {% endblock %}
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
     </main>
 </body>
 </html>
