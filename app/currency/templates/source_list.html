@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Source List
+{% endblock title %}
+
+{% block content %}
+    <a href="{% url 'source_create' %}">Create</a><br>
+
+    {% for source in sources %}
+        URL: {{ source.source_url }}<br>
+        Name: {{ source.name }}<br>
+        Phone Number: {{ source.phone_number }}<br>
+        Exchange Address: {{ source.exchange_address }}<br>
+        <a href="{% url 'source_details' source.pk %}">Details</a>
+        <hr>
+    {% endfor %}
+{% endblock content %}
