@@ -1,5 +1,6 @@
 Django==4.2.3
 django-extensions
+django-debug-toolbar
 ipython
 
 #flake
