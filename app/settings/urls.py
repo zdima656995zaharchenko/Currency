@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.contrib import admin
 from currency.views import (
     SourceListView,
     SourceCreateView,
@@ -17,6 +18,7 @@ urlpatterns = [
     path('contact/', contact_view, name='contact'),
     path('contact-us/', contact_us_list, name='contact_us_list'),
     path('sources/', SourceListView.as_view(), name='source_list'),
+    path('admin/', admin.site.urls),
     path('sources/details/<int:pk>/', source_details, name='source_details'),
     path('sources/create/', SourceCreateView.as_view(), name='source_create'),
     path('sources/update/<int:pk>/', SourceUpdateView.as_view(), name='source_update'),
