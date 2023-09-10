@@ -1,31 +1,6 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Rate, ContactUs, Source
 from .forms import SourceForm
-
-class SourceListView(ListView):
-    model = Source
-    template_name = 'source_list.html'
-    context_object_name = 'sources'
-
-class SourceCreateView(CreateView):
-    model = Source
-    form_class = SourceForm
-    template_name = 'source_create.html'
-    success_url = reverse_lazy('source_list')
-
-class SourceUpdateView(UpdateView):
-    model = Source
-    form_class = SourceForm
-    template_name = 'source_update.html'
-    success_url = reverse_lazy('source_list')
-
-class SourceDeleteView(DeleteView):
-    model = Source
-    form_class = SourceForm
-    template_name = 'source_delete.html'
-    success_url = reverse_lazy('source_list')
 
 def rates_view(request):
     rates = Rate.objects.all()
@@ -38,10 +13,38 @@ def contact_us_list(request):
     contacts = ContactUs.objects.all()
     return render(request, 'currency/contact_us_list.html', {'contacts': contacts})
 
+
+def source_list(request):
+    sources = Source.objects.all()
+    return render(request, 'source_list.html', {'sources': sources})
+
+def source_create(request):
+    if request.method == 'POST':
+        form = SourceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('source_list')
+    else:
+        form = SourceForm()
+    return render(request, 'source_create.html', {'form': form})
+
+def source_update(request, pk):
+    source = Source.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = SourceForm(request.POST, instance=source)
+        if form.is_valid():
+            form.save()
+            return redirect('source_list')
+    else:
+        form = SourceForm(instance=source)
+    return render(request, 'source_update.html', {'form': form})
+
 def source_details(request, pk):
     source = Source.objects.get(pk=pk)
     return render(request, 'source_details.html', {'source': source})
 
+def source_delete(request, pk):
+    source = Source.objects.get(pk=pk)
+    source.delete()
+    return redirect('source_list')
 
-def source_delete():
-    return None
