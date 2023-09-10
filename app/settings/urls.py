@@ -24,4 +24,3 @@ urlpatterns = [
     path('sources/update/<int:pk>/', SourceUpdateView.as_view(), name='source_update'),
     path('sources/delete/<int:pk>/', SourceDeleteView.as_view(), name='source_delete'),
 ]
-

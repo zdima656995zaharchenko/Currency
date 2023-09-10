@@ -43,17 +43,8 @@ DJANGO_APPS = [
 
 EXTERNAL_APPS = [
     'django_extensions',
-    'debug_toolbar',
-
 
 ]
-
-INTERNAL_IPS = [
-
-    '127.0.0.1',
-
-]
-
 
 INTERNAL_APPS = [
     'currency',
@@ -69,7 +60,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'settings.urls'
