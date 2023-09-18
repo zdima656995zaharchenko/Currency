@@ -1,15 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from currency.choices import CURRENCY_CHOICES
 
 class Rate(models.Model):
-    CURRENCY_CHOICES = [
-        ('USD', 'USD'),
-        ('EUR', 'EUR'),
-        ('GBP', 'GBP'),
-    ]
-
+    buy = models.DecimalField(max_digits=6, decimal_places=2)
+    sell = models.DecimalField(max_digits=6, decimal_places=2, validators=[])
+    created = models.DateTimeField(auto_now_add=True)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES)
-    rate = models.DecimalField(max_digits=10, decimal_places=2)
+    source = models.CharField(max_length=68)
+
+
 
     def __str__(self):
         return f"{self.currency} - {self.rate}"

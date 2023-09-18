@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Rate List
+{% endblock title %}
+
+{% block content %}
+    <a href="{% url 'rate_create' %}">Create</a><br>
+
+    {% for rate in rate_list %}
+        Id: {{ rate.id }}<br>
+        Buy: {{ rate.buy }}<br>
+        Sell: {{ rate.sell }}<br>
+        Currency: {{ rate.get_currency_display }}<br>
+        Source: {{ rate.source }}<br>
+        <a href="{% url 'rate_details' rate.id %}">Details</a><br>
+        <a href="{% url 'rate_update' rate.id %}">Edit</a><br>
+        <a href="{% url 'rate_delete' rate.id %}">Delete</a><br>
+        <hr>
+    {% endfor %}
+{% endblock content %}
