@@ -4,17 +4,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Rate, ContactUs, Source
-from .forms import SourceForm, ContactUsForm
+from .forms import SourceForm, ContactUsForm, RateForm
 from django.views.generic import TemplateView
 from django.http import HttpResponseServerError
 from django.views.generic.edit import FormView
-from .forms import SupportForm
-from .forms import RateForm
-from django.contrib.auth.forms import PasswordChangeForm
+from .forms import SupportForm, RateForm
+from .forms import CustomPasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
-
+from django.contrib.auth import get_user_model
 
 class RateListView(ListView):
     model = Rate
@@ -27,23 +26,26 @@ class RateCreateView(CreateView):
     template_name = 'rate_create.html'
     success_url = reverse_lazy('rate_list')
 
-def is_superuser(user):
-    return user.is_superuser
-
-class RateUpdateView(UpdateView):
+class RateUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Rate
     form_class = RateForm
     template_name = 'rate_update.html'
     success_url = reverse_lazy('rate_list')
 
+    def test_func(self):
+        return self.request.user.is_superuser
+
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')
         return get_object_or_404(Rate, pk=pk)
 
-class RateDeleteView(DeleteView):
+class RateDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Rate
     template_name = 'rate_delete.html'
     success_url = reverse_lazy('rate_list')
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')
@@ -52,9 +54,7 @@ class RateDeleteView(DeleteView):
 class RateDetailView(LoginRequiredMixin, DetailView):
     model = Rate
     template_name = 'rate_details.html'
-    succes_url = reverse_lazy('rate_list')
-
-
+    success_url = reverse_lazy('rate_list')
 
 class SourceListView(ListView):
     model = Source
@@ -79,8 +79,6 @@ class SourceDeleteView(DeleteView):
     template_name = 'source_delete.html'
     success_url = reverse_lazy('source_list')
 
-
-
 def contact_view(request):
     return render(request, 'contact.html')
 
@@ -92,16 +90,8 @@ def source_details(request, pk):
     source = Source.objects.get(pk=pk)
     return render(request, 'source_details.html', {'source': source})
 
-
-def source_delete():
-    return None
-
 class IndexView(TemplateView):
     template_name = 'index.html'
-
-
-
-
 
 class ContactUsCreateView(CreateView):
     model = ContactUs
@@ -126,16 +116,29 @@ class ContactUsCreateView(CreateView):
             [recipient],
             fail_silently=False
         )
-
         return super().form_valid(form)
+
+class ProfileView(LoginRequiredMixin, UpdateView):
+    queryset = get_user_model().objects.all()
+    template_name = 'registration/profile_update.html'
+    success_url = reverse_lazy('index')
+    fields = (
+        'first_name',
+        'last_name'
+    )
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(id=self.request.user.id)
+        return queryset
+
 
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Обновляем хэш сессии
+            update_session_auth_hash(request, user)
             return redirect('password_change_done')
     else:
-        form = PasswordChangeForm(request.user)
+        form = CustomPasswordChangeForm(request.user)
     return render(request, 'change_password.html', {'form': form})

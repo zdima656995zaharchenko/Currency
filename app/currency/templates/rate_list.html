@@ -7,15 +7,16 @@
 {% block content %}
     <a href="{% url 'rate_create' %}">Create</a><br>
 
-    {% for rate in rate_list %}
+    {% for rate in rates %}
         Id: {{ rate.id }}<br>
         Buy: {{ rate.buy }}<br>
         Sell: {{ rate.sell }}<br>
         Currency: {{ rate.get_currency_display }}<br>
         Source: {{ rate.source }}<br>
-        <a href="{% url 'rate_details' rate.id %}">Details</a><br>
-        <a href="{% url 'rate_update' rate.id %}">Edit</a><br>
-        <a href="{% url 'rate_delete' rate.id %}">Delete</a><br>
+        {% if user.is_authenticated %}
+            <a href="{% url 'rate_details' rate.pk %}">Details</a>
+        {% endif %}
         <hr>
     {% endfor %}
 {% endblock content %}
+

@@ -2,6 +2,7 @@ from django import forms
 from .models import Source
 from .models import ContactUs
 from .models import Rate
+from django.contrib.auth.forms import PasswordChangeForm
 
 class RateForm(forms.ModelForm):
     class Meta:
@@ -27,5 +28,11 @@ class SupportForm(forms.Form):
     body = forms.CharField(label='Сообщение', widget=forms.Textarea)
 
 
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    current_password = forms.CharField(
+        label="Current Password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )
 
 

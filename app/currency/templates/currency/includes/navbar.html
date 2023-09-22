@@ -1,4 +1,15 @@
 <p>
     <a href="{% url 'rates' %}">Rates</a>
     <a href="{% url 'contactus_create' %}">Contact Us</a>
+
+    {% if request.user.is_authenticated %}
+        Hello {{ request.user.email }}!
+        <a href="{% url 'profile' request.user.id %}">Profile</a>
+        <a href="{% url 'logout' %}">Log out</a>
+    {% else %}
+        <a href="#">Sign Up</a>
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+
+
 </p>

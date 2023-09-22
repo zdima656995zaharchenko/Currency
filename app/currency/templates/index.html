@@ -1,9 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome to the Main Page</title>
+    <title>{% block title %}Default Title{% endblock %}</title>
 </head>
 <body>
-    <h1>Hello, Index View!</h1>
+    <header>
+        <nav>
+            <ul>
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'profile' request.user.id %}">Profile</a></li>
+                <li><a href="{% url 'rate_create' %}">Rates</a></li>
+                <li><a href="{% url 'contactus_create' %}">Contact Us</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content">
+
+        </div>
+    </main>
 </body>
 </html>
