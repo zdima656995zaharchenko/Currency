@@ -58,6 +58,7 @@ INTERNAL_IPS = [
 
 INTERNAL_APPS = [
     'currency',
+    'user_account',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + INTERNAL_APPS
@@ -164,3 +165,9 @@ EMAIL_HOST_PASSWORD = 'xlxayweuwmlyqeca'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
+
+AUTH_USER_MODEL = 'user_account.User'
+
+DOMAIN = '0.0.0.0:8000'
+
+HTTP_PROTOCOL = 'http'

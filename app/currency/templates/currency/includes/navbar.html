@@ -7,8 +7,8 @@
         <a href="{% url 'profile' request.user.id %}">Profile</a>
         <a href="{% url 'logout' %}">Log out</a>
     {% else %}
-        <a href="#">Sign Up</a>
         <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'user_account:signup' %}">Sign Up</a>
     {% endif %}
 
 
