@@ -8,9 +8,13 @@ class Rate(models.Model):
     sell = models.DecimalField(max_digits=6, decimal_places=2, validators=[])
     created = models.DateTimeField(auto_now_add=True)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES)
-    source = models.CharField(max_length=68)
+    source = models.ForeignKey('currency.Source', on_delete=models.CASCADE)
 
-    from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+    class Meta:
+        verbose_name = _('Rate')
+        verbose_name_plural = _('Rates')
+
+
 
     class CustomUserManager(BaseUserManager):
         def create_user(self, email, password=None, **extra_fields):
@@ -47,6 +51,11 @@ class Source(models.Model):
     exchange_address = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=12)
 
+    class Meta:
+        verbose_name = _('Source')
+        verbose_name_plural = _('Sources')
+
+
     def __str__(self):
         return self.name
 
@@ -57,3 +66,4 @@ class RequestResponseLog(models.Model):
 
     def __str__(self):
         return f"{self.request_method} {self.path}"
+
