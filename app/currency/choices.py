@@ -4,3 +4,10 @@ CURRENCY_CHOICES = [
     (CURRENCY_DOLLAR, 'Dollar'),
     (CURRENCY_EURO, 'Euro'),
 ]
+
+SOURCE_PRIVATBANK = 'privatbank'
+SOURCE_ANOTHER = 'another'
+SOURCE_CHOICES = [
+    (SOURCE_PRIVATBANK, 'PrivatBank'),
+    (SOURCE_ANOTHER, 'Another Source'),
+]

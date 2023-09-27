@@ -5,14 +5,34 @@
 {% endblock title %}
 
 {% block content %}
-    <a href="{% url 'source_create' %}">Create</a><br>
+    <div class="container mt-5">
+        <a href="{% url 'source_create' %}" class="btn btn-success">Create</a><br>
 
-    {% for source in sources %}
-        URL: {{ source.source_url }}<br>
-        Name: {{ source.name }}<br>
-        Phone Number: {{ source.phone_number }}<br>
-        Exchange Address: {{ source.exchange_address }}<br>
-        <a href="{% url 'source_details' source.pk %}">Details</a>
-        <hr>
-    {% endfor %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">URL</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Exchange Address</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for source in sources %}
+                    <tr>
+                        <td>{{ source.source_url }}</td>
+                        <td>{{ source.name }}</td>
+                        <td>{{ source.phone_number }}</td>
+                        <td>{{ source.exchange_address }}</td>
+                        <td>
+                            <a href="{% url 'source_details' source.pk %}" class="btn btn-primary">Details</a>
+                            <a href="{% url 'source_update' source.pk %}" class="btn btn-warning">Edit</a>
+                            <a href="{% url 'source_delete' source.pk %}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock content %}

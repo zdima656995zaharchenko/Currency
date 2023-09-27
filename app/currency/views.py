@@ -118,18 +118,6 @@ class ContactUsCreateView(CreateView):
         )
         return super().form_valid(form)
 
-class ProfileView(LoginRequiredMixin, UpdateView):
-    queryset = get_user_model().objects.all()
-    template_name = 'registration/profile_update.html'
-    success_url = reverse_lazy('index')
-    fields = (
-        'first_name',
-        'last_name'
-    )
-
-    def get_queryset(self):
-        queryset = super().get_queryset().filter(id=self.request.user.id)
-        return queryset
 
 
 def change_password(request):
