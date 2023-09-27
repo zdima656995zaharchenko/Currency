@@ -3,9 +3,6 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-
-from django.shortcuts import render, redirect
-
 from .models import Rate, ContactUs, Source
 from .forms import SourceForm, ContactUsForm, RateForm
 from django.views.generic import TemplateView
@@ -82,41 +79,12 @@ class SourceDeleteView(DeleteView):
     template_name = 'source_delete.html'
     success_url = reverse_lazy('source_list')
 
-def rates_view(request):
-    rates = Rate.objects.all()
-    return render(request, 'rates.html', {'rates': rates})
-
 def contact_view(request):
     return render(request, 'contact.html')
 
 def contact_us_list(request):
     contacts = ContactUs.objects.all()
     return render(request, 'currency/contact_us_list.html', {'contacts': contacts})
-
-def source_list(request):
-    sources = Source.objects.all()
-    return render(request, 'source_list.html', {'sources': sources})
-
-def source_create(request):
-    if request.method == 'POST':
-        form = SourceForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('source_list')
-    else:
-        form = SourceForm()
-    return render(request, 'source_create.html', {'form': form})
-
-def source_update(request, pk):
-    source = Source.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = SourceForm(request.POST, instance=source)
-        if form.is_valid():
-            form.save()
-            return redirect('source_list')
-    else:
-        form = SourceForm(instance=source)
-    return render(request, 'source_update.html', {'form': form})
 
 def source_details(request, pk):
     source = Source.objects.get(pk=pk)
@@ -150,18 +118,7 @@ class ContactUsCreateView(CreateView):
         )
         return super().form_valid(form)
 
-class ProfileView(LoginRequiredMixin, UpdateView):
-    queryset = get_user_model().objects.all()
-    template_name = 'registration/profile_update.html'
-    success_url = reverse_lazy('index')
-    fields = (
-        'first_name',
-        'last_name'
-    )
 
-    def get_queryset(self):
-        queryset = super().get_queryset().filter(id=self.request.user.id)
-        return queryset
 
 def change_password(request):
     if request.method == 'POST':
@@ -173,9 +130,3 @@ def change_password(request):
     else:
         form = CustomPasswordChangeForm(request.user)
     return render(request, 'change_password.html', {'form': form})
-
-def source_delete(request, pk):
-    source = Source.objects.get(pk=pk)
-    source.delete()
-    return redirect('source_list')
-
