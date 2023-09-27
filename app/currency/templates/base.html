@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Default Title{% endblock %}</title>
+    <title>{% block title %}Мой сайт{% endblock %}</title>
 </head>
 <body>
     <header>
+        <!-- Заголовок сайта или логотип -->
+        <h1>Мой сайт</h1>
+
+        <!-- Навигационное меню -->
         <nav>
             <ul>
-                <li><a href="#">Главная</a></li>
-                <li><a href="#">О нас</a></li>
-                <li><a href="#">Контакты</a></li>
+                <li><a href="{% url 'rate_list' %}">Rates</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                <li><a href="{% url 'user_account:signup' %}">Sign Up</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'source_list' %}">Sources</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <div class="content">
-            {% block content %}
-            {% endblock %}
-        </div>
+        <!-- Основное содержимое страницы будет вставлено здесь -->
+        {% block content %}{% endblock %}
     </main>
+
+
 </body>
 </html>
