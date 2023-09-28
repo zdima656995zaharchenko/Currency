@@ -20,6 +20,10 @@ class RateListView(ListView):
     template_name = 'rate_list.html'
     context_object_name = 'rates'
 
+    def my_view(request):
+        rates = Rate.objects.all()
+        return render(request, 'rate_list.html', {'rates': rates})
+
 class RateCreateView(CreateView):
     model = Rate
     form_class = RateForm
@@ -100,14 +104,13 @@ class ContactUsCreateView(CreateView):
     form_class = ContactUsForm
 
     def form_valid(self, form):
-        cleaned_data = form.cleaned_data
-        recipient = settings.EMAIL_HOST_USER
+        recipient = settings.DEFAULT_FROM_EMAIL
         subject = 'User Contact Us'
         body = f'''
-           Request from: {cleaned_data['name']}.
-           Email to reply: {cleaned_data['reply_to']}
-           Subject: {cleaned_data['subject']}
-           Body: {cleaned_data['body']}
+           Request from: {form.cleaned_data['name']}.
+           Email to reply: {form.cleaned_data['reply_to']}.
+           Subject Subject: {form.cleaned_data['subject']}.
+           Body: {form.cleaned_data['body']}.
            '''
         send_mail(
             subject,
@@ -117,7 +120,6 @@ class ContactUsCreateView(CreateView):
             fail_silently=False
         )
         return super().form_valid(form)
-
 
 
 def change_password(request):

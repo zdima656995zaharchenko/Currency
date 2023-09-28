@@ -1,13 +1,10 @@
-CURRENCY_DOLLAR = 'USD'
-CURRENCY_EURO = 'EUR'
-CURRENCY_CHOICES = [
-    (CURRENCY_DOLLAR, 'Dollar'),
-    (CURRENCY_EURO, 'Euro'),
-]
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
-SOURCE_PRIVATBANK = 'privatbank'
-SOURCE_ANOTHER = 'another'
-SOURCE_CHOICES = [
-    (SOURCE_PRIVATBANK, 'PrivatBank'),
-    (SOURCE_ANOTHER, 'Another Source'),
-]
+class CurrencyChoices(models.IntegerChoices):
+    USD = 1, _("USD")
+    EUR = 2, _("EUR")
+
+class SourceChoices(models.IntegerChoices):
+    PRIVAT = 1, _("Privatbank")
+    EUR = 2, _("Monobank")

@@ -20,7 +20,7 @@ class User:
 
 
 
-    def get_full_name(self):
+    def get_full_name(self, user=None):
         return f'{user.FirstName} {user.LastName}'
 
     def save(self):

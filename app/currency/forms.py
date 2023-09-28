@@ -1,5 +1,6 @@
 from django import forms
 from .models import Source, ContactUs, Rate
+from currency.choices import CurrencyChoices, SourceChoices
 from django.contrib.auth.forms import PasswordChangeForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Field
@@ -8,6 +9,12 @@ class RateForm(forms.ModelForm):
     class Meta:
         model = Rate
         fields = ['buy', 'sell', 'currency', 'source']
+
+    source = forms.ModelChoiceField(
+        queryset=Source.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Source'
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,7 +26,6 @@ class RateForm(forms.ModelForm):
             Field('source', css_class='form-control'),
             Submit('submit', 'Create', css_class='btn btn-primary')
         )
-
 class ContactUsForm(forms.ModelForm):
     class Meta:
         model = ContactUs
