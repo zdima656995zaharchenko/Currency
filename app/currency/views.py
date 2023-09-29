@@ -2,10 +2,11 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django_filters.views import FilterView
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Rate, ContactUs, Source
 from .forms import SourceForm, ContactUsForm, RateForm
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.http import HttpResponseServerError
 from django.views.generic.edit import FormView
 from .forms import SupportForm, RateForm
@@ -14,11 +15,27 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import get_user_model
+from currency.filters import RateFilter, SourceFilter
+from django.db.models import order_by
 
-class RateListView(ListView):
+
+class RateListView(FilterView):
     model = Rate
     template_name = 'rate_list.html'
     context_object_name = 'rates'
+    paginate_by = 10
+    filterset_class = RateFilter
+
+    def get_queryset(self):
+        return Rate.objects.all().order_by('buy', 'sell', 'currency')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['filter_params'] = "&".join(
+            f"{key}={value}" for key, value in self.request.GET.items() if key != "page"
+        )
+
+        return context
 
     def my_view(request):
         rates = Rate.objects.all()
@@ -64,6 +81,19 @@ class SourceListView(ListView):
     model = Source
     template_name = 'source_list.html'
     context_object_name = 'sources'
+    paginate_by = 10
+    filterset_class = SourceFilter
+
+    def get_queryset(self):
+        queryset = Source.objects.all().order_by('name', 'source_url', 'exchange_address', 'phone_number')
+        return queryset
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['filter_params'] = "&".join(
+            f"{key}={value}" for key, value in self.request.GET.items() if key != "page"
+        )
+
+        return context
 
 class SourceCreateView(CreateView):
     model = Source

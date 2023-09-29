@@ -8,6 +8,11 @@
     <div class="container mt-5">
         <a href="{% url 'source_create' %}" class="btn btn-success">Create</a><br>
 
+        <form method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" class="btn btn-primary" value="Filter" />
+        </form>
+
         <table class="table table-striped mt-3">
             <thead>
                 <tr>
@@ -34,5 +39,8 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {% include "currency/includes/pagination.html" %}
+
     </div>
 {% endblock content %}

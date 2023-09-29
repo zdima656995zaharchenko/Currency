@@ -60,7 +60,7 @@ class Source(models.Model):
     exchange_address = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=12)
     name = models.CharField(_('Name'), max_length=64)
-    code_name = models.CharField(_('Code_name'), max_length=32)
+    code_name = models.CharField(_('Code_name'), max_length=32, unique=True)
     class Meta:
         verbose_name = _('Source')
         verbose_name_plural = _('Sources')

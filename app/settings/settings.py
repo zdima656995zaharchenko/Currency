@@ -50,6 +50,8 @@ EXTERNAL_APPS = [
     'storages',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_filters',
+
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
@@ -170,7 +172,6 @@ MEDIA_ROOT = BASE_DIR.parent / 'var' / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

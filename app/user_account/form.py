@@ -49,7 +49,7 @@ class UserSignUpForm(UserCreationForm):
         return instance
 
     def _send_mail(self):
-        activate_path = reverse('account:activate', args=[self.instance.username])
+        activate_path = reverse('user_account:activate', args=[self.instance.username])
         subject = 'Thanks for signing up!'
         body = f'''
         {settings.HTTP_PROTOCOL}://{settings.DOMAIN}/{activate_path}

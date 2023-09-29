@@ -8,6 +8,7 @@ Celery
 crispy-bootstrap5
 django-crispy-forms
 requests
+django-filter
 
 #flake
 flake8
