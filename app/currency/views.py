@@ -16,7 +16,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import get_user_model
 from currency.filters import RateFilter, SourceFilter
-from django.db.models import order_by
+
 
 
 class RateListView(FilterView):

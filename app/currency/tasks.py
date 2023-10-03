@@ -6,6 +6,7 @@ from decimal import Decimal, ROUND_DOWN
 from currency.choices import CurrencyChoices
 from currency.consts import PRIVATBANK_CODE_NAME, MONOBANK_CODE_NAME
 from currency.utils import to_2_places_decimal
+from django.core.mail import send_mail
 
 
 
@@ -97,3 +98,25 @@ def parse_monobank():
             currency=currency
          )
 
+
+def send_contact_us_email(email_body):
+   send_mail(
+      "Contact Us",
+      email_body,
+      settings.DEFAULT_FROM_EMAIL,
+      [settings.DEFAULT_FROM_EMAIL],
+      fail_silently=False,
+   )
+   return True
+
+
+@shared_task
+def send_signup_verify_email(subject, body, from_email, recipient):
+   send_mail(
+      subject,
+      body,
+      from_email,
+      [recipient],
+      fail_silently=False,
+   )
+   return True

@@ -71,5 +71,3 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         label="Current Password",
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
     )
-
-

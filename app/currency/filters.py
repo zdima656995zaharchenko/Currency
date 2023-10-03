@@ -21,4 +21,3 @@ class SourceFilter(django_filters.FilterSet):
             'exchange_address',
             'phone_number'
         )
-

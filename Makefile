@@ -19,3 +19,6 @@ beat:
 from currency.tasks import parse_monobank;parse_monobank()
 
 user = User.objects.first()
+
+pytest:
+    pytest ./app/tests
