@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from currency.api.v1.views import RateViewSet, RateDetailDestroyApiView, SourceListAPIView, SourceDetailedAPIView, \
-    SourceCreateAPIView, ContactUsListAPIView, ContactUsDetailedAPIView
+    SourceCreateAPIView, ContactUsListAPIView, ContactUsDetailedAPIView, ContactUsCreateAPIView
 
 app_name = "currency_api"
 
@@ -22,6 +22,7 @@ urlpatterns = [
          name="source-retrieve-update-destroy"),
 
     path("contactus/list", ContactUsListAPIView.as_view(), name="contactus-list"),
+    path("contactus/create/", ContactUsCreateAPIView.as_view(), name="contactus-create"),
     path("contactus/<int:pk>/", ContactUsDetailedAPIView.as_view(),
          name="contactus-retrieve-update-destroy"),
 ]

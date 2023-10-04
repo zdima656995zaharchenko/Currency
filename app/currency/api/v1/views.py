@@ -54,3 +54,8 @@ class ContactUsListAPIView(generics.ListAPIView):
 class ContactUsDetailedAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ContactUs.objects.all()
     serializer_class = ContactUsSerializer
+
+
+class ContactUsCreateAPIView(generics.CreateAPIView):
+    queryset = ContactUs.objects.all()
+    serializer_class = ContactUsSerializer
