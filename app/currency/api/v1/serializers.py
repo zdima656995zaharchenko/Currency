@@ -7,8 +7,7 @@ class RateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rate
         fields = (
-            'buy',
-            'sell',
-            'currency',
+            "buy",
+            "sell",
+            "currency",
         )
-

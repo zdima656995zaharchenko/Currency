@@ -14,13 +14,16 @@ from currency.api.v1.paginators import RatePagination
 
 
 class RateViewSet(viewsets.ModelViewSet):
-    queryset = Rate.objects.all().order_by('-created')
+    queryset = Rate.objects.all().order_by("-created")
     serializer_class = RateSerializer
-    renderer_classes = (JSONRenderer)
+    renderer_classes = JSONRenderer
     pagination_class = RatePagination
-    filter_backends = (filters.DjangoFilterBackend, rest_framework_filters.OrderingFilter)
+    filter_backends = (
+        filters.DjangoFilterBackend,
+        rest_framework_filters.OrderingFilter,
+    )
     filterset_class = RateFilter
-    ordering_fields = ('buy', 'sell', 'created')
+    ordering_fields = ("buy", "sell", "created")
 
 
 class RateDetailDestroyApiView(generics.RetrieveDestroyAPIView):

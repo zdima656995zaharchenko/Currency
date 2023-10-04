@@ -30,7 +30,7 @@ class Rate(models.Model):
     class CustomUserManager(BaseUserManager):
         def create_user(self, email, password=None, **extra_fields):
             if not email:
-                raise ValueError('The Email field must be set')
+                raise ValueError("The Email field must be set")
             email = self.normalize_email(email)
             user = self.model(email=email, **extra_fields)
             user.set_password(password)
@@ -38,8 +38,8 @@ class Rate(models.Model):
             return user
 
         def create_superuser(self, email, password=None, **extra_fields):
-            extra_fields.setdefault('is_staff', True)
-            extra_fields.setdefault('is_superuser', True)
+            extra_fields.setdefault("is_staff", True)
+            extra_fields.setdefault("is_superuser", True)
 
             return self.create_user(email, password, **extra_fields)
 
@@ -48,23 +48,23 @@ class Rate(models.Model):
 
 
 class ContactUs(models.Model):
-    created = models.DateTimeField(_('Created'), auto_now_add=True)
-    name = models.CharField(_('Name'), max_length=128)
-    reply_to = models.EmailField(_('Email'))
-    subject = models.CharField(_('Subject'), max_length=128)
-    body = models.CharField(_('Body'), max_length=1024)
+    created = models.DateTimeField(_("Created"), auto_now_add=True)
+    name = models.CharField(_("Name"), max_length=128)
+    reply_to = models.EmailField(_("Email"))
+    subject = models.CharField(_("Subject"), max_length=128)
+    body = models.CharField(_("Body"), max_length=1024)
 
 
 class Source(models.Model):
     source_url = models.CharField(max_length=255)
     exchange_address = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=12)
-    name = models.CharField(_('Name'), max_length=64)
-    code_name = models.CharField(_('Code_name'), max_length=32, unique=True)
+    name = models.CharField(_("Name"), max_length=64)
+    code_name = models.CharField(_("Code_name"), max_length=32, unique=True)
 
     class Meta:
-        verbose_name = _('Source')
-        verbose_name_plural = _('Sources')
+        verbose_name = _("Source")
+        verbose_name_plural = _("Sources")
 
     def __str__(self):
         return self.name

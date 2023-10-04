@@ -5,12 +5,12 @@ from user_account.models import User
 
 @receiver(pre_save, sender=User)
 def user_pre_save(*args, **kwargs):
-    print('PRE SAVE IN SIGNAL')
+    print("PRE SAVE IN SIGNAL")
 
 
 @receiver(post_save, sender=User)
 def user_pre_save(*args, **kwargs):
-    print('POST SAVE IN SIGNAL')
+    print("POST SAVE IN SIGNAL")
 
     @receiver(pre_save, sender=User)
     def user_set_phone_number(instance, *args, **kwargs):

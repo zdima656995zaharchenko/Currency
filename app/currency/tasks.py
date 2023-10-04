@@ -9,114 +9,102 @@ from currency.utils import to_2_places_decimal
 from django.core.mail import send_mail
 
 
-
-
 @shared_task
 def parse_privatbank():
-   from currency.models import Rate, Source
-   from currency.choices import CurrencyChoices
+    from currency.models import Rate, Source
+    from currency.choices import CurrencyChoices
 
-   source, _ = Source.objects.get_or_create(
-      code_name=consts.PRIVATBANK_CODE_NAME,
-      defaults={
-         'name': 'PrivatBank'
-      }
-   )
+    source, _ = Source.objects.get_or_create(
+        code_name=consts.PRIVATBANK_CODE_NAME, defaults={"name": "PrivatBank"}
+    )
 
-   url = "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=11"
-   response = requests.get(url)
+    url = "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=11"
+    response = requests.get(url)
 
-   rates = response.json()
+    rates = response.json()
 
-   available_currencies = {
-      'USD': CurrencyChoices.USD,
-      'EUR': CurrencyChoices.EUR
-   }
+    available_currencies = {"USD": CurrencyChoices.USD, "EUR": CurrencyChoices.EUR}
 
-   for rate in rates:
-      buy = to_2_places_decimal(rate['buy'])
-      sale = to_2_places_decimal(rate['sale'])
-      currency = rate['ccy']
+    for rate in rates:
+        buy = to_2_places_decimal(rate["buy"])
+        sale = to_2_places_decimal(rate["sale"])
+        currency = rate["ccy"]
 
-      if currency not in available_currencies:
-         continue
+        if currency not in available_currencies:
+            continue
 
-      currency = available_currencies[currency]
+        currency = available_currencies[currency]
 
-      last_rate = Rate.objects.filter(source=source, currency=currency).order_by('created').last()
+        last_rate = (
+            Rate.objects.filter(source=source, currency=currency)
+            .order_by("created")
+            .last()
+        )
 
-      if last_rate is not None and (last_rate.buy != buy or last_rate.sell != sale):
-         Rate.objects.create(
-            buy=buy,
-            sell=sale,
-            source=source,
-            currency=currency
-         )
+        if last_rate is not None and (last_rate.buy != buy or last_rate.sell != sale):
+            Rate.objects.create(buy=buy, sell=sale, source=source, currency=currency)
+
 
 @shared_task
 def parse_monobank():
-   from currency.models import Rate, Source
-   from currency.choices import CurrencyChoices
+    from currency.models import Rate, Source
+    from currency.choices import CurrencyChoices
 
-   source, _ = Source.objects.get_or_create(
-      code_name=consts.MONOBANK_CODE_NAME,
-      defaults={
-          'name': 'MonoBank'
-      }
-   )
+    source, _ = Source.objects.get_or_create(
+        code_name=consts.MONOBANK_CODE_NAME, defaults={"name": "MonoBank"}
+    )
 
-   url = 'https://api.monobank.ua/bank/currency'
-   response = requests.get(url)
+    url = "https://api.monobank.ua/bank/currency"
+    response = requests.get(url)
 
-   rates = response.json()
+    rates = response.json()
 
-   available_currencies = {
-      840: CurrencyChoices.USD,
-      978: CurrencyChoices.EUR,
-   }
+    available_currencies = {
+        840: CurrencyChoices.USD,
+        978: CurrencyChoices.EUR,
+    }
 
-   for rate in rates:
-      buy = to_2_places_decimal(rate['rateBuy'])
-      sale = to_2_places_decimal(rate['rateSell'])
-      currency_code = rate['currencyCodeA']
+    for rate in rates:
+        buy = to_2_places_decimal(rate["rateBuy"])
+        sale = to_2_places_decimal(rate["rateSell"])
+        currency_code = rate["currencyCodeA"]
 
-      if currency_code not in available_currencies:
-         continue
+        if currency_code not in available_currencies:
+            continue
 
-      currency = available_currencies[currency_code]
+        currency = available_currencies[currency_code]
 
-      print("Available Currencies:", available_currencies)
-      print("Currency:", currency_code)  # Выводим код валюты
+        print("Available Currencies:", available_currencies)
+        print("Currency:", currency_code)  # Выводим код валюты
 
-      last_rate = Rate.objects.filter(source=source, currency=currency_code).order_by('created').last()
+        last_rate = (
+            Rate.objects.filter(source=source, currency=currency_code)
+            .order_by("created")
+            .last()
+        )
 
-      if last_rate is not None and (last_rate.buy != buy or last_rate.sell != sale):
-         Rate.objects.create(
-            buy=buy,
-            sell=sale,
-            source=source,
-            currency=currency
-         )
+        if last_rate is not None and (last_rate.buy != buy or last_rate.sell != sale):
+            Rate.objects.create(buy=buy, sell=sale, source=source, currency=currency)
 
 
 def send_contact_us_email(email_body):
-   send_mail(
-      "Contact Us",
-      email_body,
-      settings.DEFAULT_FROM_EMAIL,
-      [settings.DEFAULT_FROM_EMAIL],
-      fail_silently=False,
-   )
-   return True
+    send_mail(
+        "Contact Us",
+        email_body,
+        settings.DEFAULT_FROM_EMAIL,
+        [settings.DEFAULT_FROM_EMAIL],
+        fail_silently=False,
+    )
+    return True
 
 
 @shared_task
 def send_signup_verify_email(subject, body, from_email, recipient):
-   send_mail(
-      subject,
-      body,
-      from_email,
-      [recipient],
-      fail_silently=False,
-   )
-   return True
+    send_mail(
+        subject,
+        body,
+        from_email,
+        [recipient],
+        fail_silently=False,
+    )
+    return True

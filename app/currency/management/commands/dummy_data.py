@@ -8,23 +8,16 @@ class Command(BaseCommand):
     help = "Generates dummy rates data"
 
     def handle(self, *args, **options):
-
         source, _ = Source.objects.get_or_create(
-            code_name='dummy',
-            defaults={
-                'name': 'Dummy source'
-            }
+            code_name="dummy", defaults={"name": "Dummy source"}
         )
 
         for _ in range(400):
             Rate.objects.create(
-                buy=random.randint(30,40),
-                sell=random.randint(30,40),
+                buy=random.randint(30, 40),
+                sell=random.randint(30, 40),
                 currency=random.choice(CurrencyChoices.choices)[0],
-                source=source
-
+                source=source,
             )
 
-        self.stdout.write(
-                self.style.SUCCESS('Successfully generated dummy data!')
-         )
+        self.stdout.write(self.style.SUCCESS("Successfully generated dummy data!"))
