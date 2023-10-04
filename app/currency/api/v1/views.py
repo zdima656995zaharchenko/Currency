@@ -2,9 +2,9 @@ from django_filters import rest_framework as filters
 from rest_framework import viewsets, generics
 from rest_framework import filters as rest_framework_filters
 
-from currency.models import Rate, Source
+from currency.models import Rate, Source, ContactUs, RequestResponseLog
 from currency.api.v1.filters import RateFilter
-from currency.api.v1.serializers import RateSerializer, SourceSerializer
+from currency.api.v1.serializers import RateSerializer, SourceSerializer, ContactUsSerializer, LogsSerializer
 from rest_framework.renderers import JSONRenderer
 from currency.api.v1.paginators import RatePagination
 
@@ -44,3 +44,13 @@ class SourceDetailedAPIView(generics.RetrieveUpdateDestroyAPIView):
 class SourceCreateAPIView(generics.CreateAPIView):
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
+
+
+class ContactUsListAPIView(generics.ListAPIView):
+    queryset = ContactUs.objects.all()
+    serializer_class = ContactUsSerializer
+
+
+class ContactUsDetailedAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ContactUs.objects.all()
+    serializer_class = ContactUsSerializer
