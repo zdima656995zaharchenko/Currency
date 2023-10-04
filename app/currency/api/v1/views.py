@@ -4,7 +4,7 @@ from rest_framework import filters as rest_framework_filters
 
 from currency.models import Rate, Source
 from currency.api.v1.filters import RateFilter
-from currency.api.v1.serializers import RateSerializer
+from currency.api.v1.serializers import RateSerializer, SourceSerializer
 from rest_framework.renderers import JSONRenderer
 from currency.api.v1.paginators import RatePagination
 
@@ -29,3 +29,8 @@ class RateViewSet(viewsets.ModelViewSet):
 class RateDetailDestroyApiView(generics.RetrieveDestroyAPIView):
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
+
+
+class SourceListAPIView(generics.ListAPIView):
+    queryset = Source.objects.all()
+    serializer_class = SourceSerializer

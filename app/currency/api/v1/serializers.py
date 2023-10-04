@@ -7,7 +7,18 @@ class RateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rate
         fields = (
+            "id",
             "buy",
             "sell",
             "currency",
+        )
+
+
+class SourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Source
+        fields = (
+            "id",
+            "source_url",
+            "name",
         )

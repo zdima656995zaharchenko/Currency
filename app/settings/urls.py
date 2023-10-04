@@ -11,6 +11,8 @@ urlpatterns = [
     path("", include("currency.urls")),
     path("user/account/", include("user_account.urls")),
     path("login/", auth_views.LoginView.as_view(), name="login"),
+
+    path("api/v1/", include("currency.api.v1.urls"))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

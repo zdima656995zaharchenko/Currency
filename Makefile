@@ -1,5 +1,5 @@
 run:
-	python app/manage.py runserver
+	python3 app/manage.py runserver
 
 migrate:
 	python app/manage.py migrate
