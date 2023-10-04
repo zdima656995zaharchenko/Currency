@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from currency.api.v1.views import RateViewSet, RateDetailDestroyApiView, SourceListAPIView
+from currency.api.v1.views import RateViewSet, RateDetailDestroyApiView, SourceListAPIView, SourceDetailedAPIView, \
+    SourceCreateAPIView
 
 app_name = "currency_api"
 
@@ -15,6 +16,8 @@ urlpatterns = [
         name="rate-detail-delete",
     ),
 
-    path("source/list", SourceListAPIView.as_view(), name="source-list")
+    path("source/list", SourceListAPIView.as_view(), name="source-list"),
+    path("source/create/", SourceCreateAPIView.as_view(), name="source-create"),
+    path("source/<int:pk>/", SourceDetailedAPIView.as_view(),
+         name="source-retrieve-update-destroy"),
 ]
-

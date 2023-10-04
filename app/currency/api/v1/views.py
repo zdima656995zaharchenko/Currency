@@ -34,3 +34,13 @@ class RateDetailDestroyApiView(generics.RetrieveDestroyAPIView):
 class SourceListAPIView(generics.ListAPIView):
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
+
+
+class SourceDetailedAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Source.objects.all()
+    serializer_class = SourceSerializer
+
+
+class SourceCreateAPIView(generics.CreateAPIView):
+    queryset = Source.objects.all()
+    serializer_class = SourceSerializer
