@@ -6,12 +6,7 @@ from currency.models import Rate, Source, ContactUs, RequestResponseLog
 class RateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rate
-        fields = (
-            "id",
-            "buy",
-            "sell",
-            "currency",
-        )
+        fields = "__all__"
 
 
 class SourceSerializer(serializers.ModelSerializer):

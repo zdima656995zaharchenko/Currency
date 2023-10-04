@@ -13,20 +13,34 @@ from currency.api.v1.paginators import RatePagination
 # from rest_framework_yaml.renderers import YAMLRenderer
 
 
-class RateViewSet(viewsets.ModelViewSet):
-    queryset = Rate.objects.all().order_by("-created")
+# class RateViewSet(viewsets.ModelViewSet):
+#     queryset = Rate.objects.all().order_by("-created")
+#     serializer_class = RateSerializer
+#     renderer_classes = JSONRenderer
+#     pagination_class = RatePagination
+#     filter_backends = (
+#         filters.DjangoFilterBackend,
+#         rest_framework_filters.OrderingFilter,
+#     )
+#     filterset_class = RateFilter
+#     ordering_fields = ("buy", "sell", "created")
+
+
+# class RateDetailDestroyApiView(generics.RetrieveDestroyAPIView):
+#     queryset = Rate.objects.all()
+#     serializer_class = RateSerializer
+
+class RateListAPIView(generics.ListAPIView):
+    queryset = Rate.objects.all()
     serializer_class = RateSerializer
-    renderer_classes = JSONRenderer
-    pagination_class = RatePagination
-    filter_backends = (
-        filters.DjangoFilterBackend,
-        rest_framework_filters.OrderingFilter,
-    )
-    filterset_class = RateFilter
-    ordering_fields = ("buy", "sell", "created")
 
 
-class RateDetailDestroyApiView(generics.RetrieveDestroyAPIView):
+class RateDetailedAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Rate.objects.all()
+    serializer_class = RateSerializer
+
+
+class RateCreateAPIView(generics.CreateAPIView):
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 

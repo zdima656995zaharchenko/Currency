@@ -1,21 +1,22 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from currency.api.v1.views import RateViewSet, RateDetailDestroyApiView, SourceListAPIView, SourceDetailedAPIView, \
+from currency.api.v1.views import RateListAPIView, RateCreateAPIView, RateDetailedAPIView, SourceListAPIView, \
+    SourceDetailedAPIView, \
     SourceCreateAPIView, ContactUsListAPIView, ContactUsDetailedAPIView, ContactUsCreateAPIView, LogsDetailedAPIView, \
     LogsListAPIView
 
 app_name = "currency_api"
 
 router = DefaultRouter(trailing_slash=False)
-router.register("rates", RateViewSet, basename="rate")
+# router.register("rates", RateViewSet, basename="rate")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path(
-        "rates/detail-delete/<int:pk>/",
-        RateDetailDestroyApiView.as_view(),
-        name="rate-detail-delete",
-    ),
+
+    path("rate/list", RateListAPIView.as_view(), name="rate-list"),
+    path("rate/create/", RateCreateAPIView.as_view(), name="rate-create"),
+    path("rate/<int:pk>/", RateDetailedAPIView.as_view(),
+         name="rate-retrieve-update-destroy"),
 
     path("source/list", SourceListAPIView.as_view(), name="source-list"),
     path("source/create/", SourceCreateAPIView.as_view(), name="source-create"),
