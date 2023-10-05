@@ -1,8 +1,25 @@
 Django==4.2.3
 django-extensions
+django-debug-toolbar
+django-import-export
+django-storages
 ipython
+Celery
+crispy-bootstrap5
+django-crispy-forms
+requests
+django-filter
+djangorestframework
+djangorestframework-xml
+djangorestframework-yaml
+djangorestframework-simplejwt
+drf-yasg
 
 #flake
 flake8
 flake8-builtins
 flake8-print
+
+#pytest
+pytest
+pytest-django
