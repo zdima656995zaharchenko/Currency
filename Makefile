@@ -22,3 +22,6 @@ user = User.objects.first()
 
 pytest:
     pytest ./app/tests
+
+
+python app/manage.py show_urls | Select-String 'api'

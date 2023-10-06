@@ -5,6 +5,7 @@ from currency import consts
 from decimal import Decimal, ROUND_DOWN
 from currency.choices import CurrencyChoices
 from currency.consts import PRIVATBANK_CODE_NAME, MONOBANK_CODE_NAME
+from currency.consts import MONOBANK_DEV_NAME
 from currency.utils import to_2_places_decimal
 from django.core.mail import send_mail
 
@@ -64,18 +65,24 @@ def parse_privatbank():
 
 
 @shared_task
-def parse_monobank():
+def get_currency_monobank():
+    import logging
+    logging.info("PARSING MONOBANK")
     from currency.models import Rate, Source
-    from currency.choices import CurrencyChoices
 
-    source, _ = Source.objects.get_or_create(
-        code_name=consts.MONOBANK_CODE_NAME, defaults={"name": "MonoBank"}
-    )
+    monobank_api_url = "https://api.monobank.ua/bank/currency"
 
-    url = "https://api.monobank.ua/bank/currency"
-    response = requests.get(url)
+    source = Source.objects.filter(dev_name=MONOBANK_DEV_NAME).first()
+    if source is None:
+        source = Source.objects.create(
+            dev_name=MONOBANK_DEV_NAME, name="MonoBank", url=monobank_api_url
+        )
+        logging.info("NEW MONOBANK SOURCE")
 
-    rates = response.json()
+    response = requests.get(monobank_api_url)
+    response.raise_for_status()
+
+    rates = response.json()[0:2]
 
     available_currencies = {
         840: CurrencyChoices.USD,
@@ -83,26 +90,31 @@ def parse_monobank():
     }
 
     for rate in rates:
+        currency = rate["currencyCodeA"]
         buy = to_2_places_decimal(rate["rateBuy"])
-        sale = to_2_places_decimal(rate["rateSell"])
-        currency_code = rate["currencyCodeA"]
+        sell = to_2_places_decimal(rate["rateSell"])
 
-        if currency_code not in available_currencies:
+        if currency not in available_currencies.keys():
             continue
 
-        currency = available_currencies[currency_code]
-
-        print("Available Currencies:", available_currencies)
-        print("Currency:", currency_code)  # Выводим код валюты
-
         last_rate = (
-            Rate.objects.filter(source=source, currency=currency_code)
-            .order_by("created")
-            .last()
+            Rate.objects.filter(source=source, currency=available_currencies[currency])
+            .order_by("-created")
+            .first()
         )
 
-        if last_rate is not None and (last_rate.buy != buy or last_rate.sell != sale):
-            Rate.objects.create(buy=buy, sell=sale, source=source, currency=currency)
+        if last_rate is None or last_rate.buy != buy or last_rate.sell != sell:
+            Rate.objects.create(
+                currency=available_currencies[currency],
+                buy=buy,
+                sell=sell,
+                source=source,
+            )
+            logging.info("NEW MONOBANK RATE")
+
+
+def mono_api():
+    return requests.get("https://api.monobank.ua/bank/currency").json()
 
 
 
