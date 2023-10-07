@@ -32,7 +32,7 @@ def test_get_source(api_client_auth):
 
 
 def test_get_source_valid_id(api_client_auth):
-    response = api_client_auth.get("/api/v1/source/list/?id=7")
+    response = api_client_auth.get("/api/v1/source/list/?id=2")
     assert response.status_code == 200
     assert len(response.json()["results"]) == 1
 
