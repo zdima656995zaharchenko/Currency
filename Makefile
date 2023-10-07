@@ -21,7 +21,7 @@ from currency.tasks import parse_monobank;parse_monobank()
 user = User.objects.first()
 
 pytest:
-    pytest ./app/tests
+    pytest ./app/tests --cov=app --cov-report html
 
 
 python app/manage.py show_urls | Select-String 'api'
