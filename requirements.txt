@@ -1,4 +1,5 @@
 Django==4.2.3
+django-suit
 django-extensions
 django-debug-toolbar
 django-import-export

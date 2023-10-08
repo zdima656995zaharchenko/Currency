@@ -15,6 +15,7 @@ import os
 
 from celery.schedules import crontab
 from django.urls import reverse_lazy
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +32,19 @@ DEBUG = os.getenv("DJANGO_DEBUG") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
+env = environ.Env(
+
+    DEBUG=(bool, False),
+    RABBITMQ_DEFAULT_USER=(str, 'quest'),
+    RABBITMQ_DEFAULT_PASS=(str, 'quest'),
+    RABBITMQ_DEFAULT_PORT=(str, '5672'),
+    RABBITMQ_DEFAULT_HOST=(str, 'localhost'),
+    POSTGRES_DB=(str, 'currency_db'),
+    POSTGRES_USER=(str, ''),
+    POSTGRES_PASSWORD=(str, 'password'),
+    POSTGRES_HOST=(str, 'localhost'),
+    POSTGRES_PORT=(str, '5432')
+)
 
 # Application definition
 
@@ -154,7 +168,7 @@ WSGI_APPLICATION = "settings.wsgi.application"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
-        "LOCATION": "localhost:11211",
+        "LOCATION": "memcached:11211",
     }
 }
 
@@ -167,11 +181,11 @@ CACHES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("POSTGRES_NAME"),
-        'USER': os.getenv("POSTGRES_USER"),
-        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
-        'HOST': os.getenv("POSTGRES_HOST"),
-        'PORT': os.getenv("POSTGRES_PORT"),
+        'NAME': env('POSTGRES_DB'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT'),
     }
 }
 
