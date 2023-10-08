@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-oghl@lace07d69swt9*&pl4b2np5mosp2@t7f&zd(x^!l26#0-"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -151,14 +151,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "settings.wsgi.application"
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "localhost:11211",
+    }
+}
+
+
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("POSTGRES_NAME"),
+        'USER': os.getenv("POSTGRES_USER"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+        'HOST': os.getenv("POSTGRES_HOST"),
+        'PORT': os.getenv("POSTGRES_PORT"),
     }
 }
 
@@ -235,7 +248,11 @@ DOMAIN = "0.0.0.0:8000"
 
 HTTP_PROTOCOL = "http"
 
-CELERY_BROKER_URL = "amqp://localhost"
+CELERY_BROKER_URL = (f"amqp://"
+                     f"{os.getenv('RABBITMQ_DEFAULT_USER')}:"
+                     f"{os.getenv('RABBITMQ_DEFAULT_PASS')}@"
+                     f"{os.getenv('RABBITMQ_DEFAULT_HOST')}:"
+                     f"{os.getenv('RABBITMQ_DEFAULT_PORT')}")
 
 CELERY_BEAT_SCHEDULE = {
     #    'debug': {
